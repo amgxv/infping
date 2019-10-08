@@ -15,12 +15,10 @@ def getGitTag() {
 }
 
 def buildDockerImage(image, arch, tag) {
-  script {
-    img = docker.build("${image}:${arch}-${tag}", "--pull --build-arg ARCH=${arch} -f docker/Dockerfile .")
-  }
+  return docker.build("${image}:${arch}-${tag}", "--pull --build-arg ARCH=${arch} -f docker/Dockerfile .")
 }
 
-def pushDockerImage(arch, tag) {
+def pushDockerImage(img, arch, tag) {
   def githubImage = "docker.pkg.github.com/majorcadevs/infping/infping-$arch:$tag"
   script {
     docker.withRegistry('https://registry.hub.docker.com', 'amgxv_dockerhub') { 
@@ -115,13 +113,15 @@ pipeline {
 
             stage ('Build') {
               steps {
-                buildDockerImage(image,arch,tag)
+                script {
+                  img = buildDockerImage(image, arch, tag)
+                }
               }
             }
 
             stage ('Push') {
               steps {
-                pushDockerImage(arch,tag)
+                pushDockerImage(img, arch, tag)
               }
             }
           }
@@ -147,13 +147,15 @@ pipeline {
 
             stage ('Build') {
               steps {
-                buildDockerImage(image,arch,tag)
+                script {
+                  img = buildDockerImage(image, arch, tag)
+                }
               }
             }
 
             stage ('Push') {
               steps {
-                pushDockerImage(arch,tag)
+                pushDockerImage(img, arch, tag)
               }
             }
           }
@@ -179,13 +181,15 @@ pipeline {
 
             stage ('Build') {
               steps {
-                buildDockerImage(image,arch,tag)
+                script {
+                  img = buildDockerImage(image, arch, tag)
+                }
               }
             }
 
             stage ('Push') {
               steps {
-                pushDockerImage(arch,tag)
+                pushDockerImage(img, arch, tag)
               }
             }
           }
