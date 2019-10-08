@@ -8,9 +8,9 @@ def getNodeHostname() {
 
 def getGitTag() {
   echo 'trying to get git tag'
-  GIT_TAG = sh(script: 'git describe --abbrev=0 --tags', returnStdout: true).trim()
+  GIT_TAG = sh(script: 'git tag -l --contains HEAD', returnStdout: true).trim()
   echo "detected tag : ${GIT_TAG}"
-  GIT_COMMIT_DESCRIPTION = sh(script: 'git log -n1 --pretty=format:%B | cat', returnStdout: true).trim()
+  GIT_COMMIT_DESCRIPTION = sh(script: 'git log -n1 --pretty=format:%B', returnStdout: true).trim()
   echo "current description : ${GIT_COMMIT_DESCRIPTION}"
 }
 
@@ -311,7 +311,12 @@ pipeline {
 
   stage('Upload Release to Github') {
       agent { label 'majorcadevs' }
-      when { expression { GIT_TAG != null } }
+      when {
+        expression {
+          GIT_TAG != null && GIT_TAG != ''
+        }
+      }
+
       steps {
         uploadArtifacts()
       }
