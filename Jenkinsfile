@@ -21,7 +21,7 @@ def buildDockerImage(image, arch, tag) {
 }
 
 def pushDockerImage(arch, tag) {
-  def githubImage = "docker.pkg.github.com/MajorcaDevs/infping/infping-$arch:$tag"
+  def githubImage = "docker.pkg.github.com/majorcadevs/infping/infping-$arch:$tag"
   script {
     docker.withRegistry('https://registry.hub.docker.com', 'amgxv_dockerhub') { 
       img.push("${arch}-${tag}")  
