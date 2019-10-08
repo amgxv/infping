@@ -49,7 +49,7 @@ def goBuild(arch, os, gopath) {
   return exeName
 }
 
-def build(arch, os) {
+def buildExecutable(arch, os) {
   def gopath = pwd() + '/.go'
   sh "mkdir -p ${gopath}"
 
@@ -224,7 +224,7 @@ pipeline {
           }
 
           steps {
-            build(arch, os)
+            buildExecutable(arch, os)
           }
         }
 
@@ -241,7 +241,7 @@ pipeline {
           }
 
           steps {
-            build(arch, os)
+            buildExecutable(arch, os)
           }
         }
 
@@ -258,7 +258,7 @@ pipeline {
           }
 
           steps {
-            build(arch, os)
+            buildExecutable(arch, os)
           }
         }
 
@@ -275,7 +275,7 @@ pipeline {
           }
 
           steps {
-            build(arch, os)
+            buildExecutable(arch, os)
           }
         }
 
@@ -292,7 +292,7 @@ pipeline {
           }
 
           steps {
-            build(arch, os)
+            buildExecutable(arch, os)
           }
         }
       }
