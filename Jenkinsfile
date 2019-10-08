@@ -71,6 +71,7 @@ def uploadArtifacts() {
       ['infping-linux-arm', 'application/octet-stream'],
       ['infping-linux-arm64', 'application/octet-stream'],
       ['infping-darwin-amd64', 'application/octet-stream'],
+      ['infping-windows-amd64', 'application/octet-stream'],
     ]
   )
 }
@@ -79,7 +80,6 @@ def uploadArtifacts() {
 pipeline {
   agent { label '!docker-qemu' }
   environment {
-    img = ''
     image = 'amgxv/infping'
     chatId = credentials('amgxv-telegram-chatid')
     GIT_COMMIT_DESCRIPTION = ''

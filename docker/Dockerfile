@@ -2,8 +2,8 @@ ARG ARCH=amd64
 
 FROM golang:alpine AS build-env
 ARG ARCH
-COPY . $GOPATH/src/github.com/amgxv/infping
-WORKDIR $GOPATH/src/github.com/amgxv/infping
+COPY . $GOPATH/src/github.com/majorcadevs/infping
+WORKDIR $GOPATH/src/github.com/majorcadevs/infping
 RUN apk add git --no-cache && \
     case ${ARCH} in \
         amd64) export GOARCH=amd64 ;; \
