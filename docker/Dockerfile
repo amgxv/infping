@@ -2,7 +2,9 @@ ARG ARCH=amd64
 FROM ${ARCH}/golang:alpine AS build-env
 COPY . $GOPATH/src/github.com/amgxv/infping
 WORKDIR $GOPATH/src/github.com/amgxv/infping
-RUN apk add --virtual .bdeps git gcc make musl-dev --no-cache && go get -v && go build -o /infping && apk del .bdeps
+RUN apk add git gcc make musl-dev --no-cache && \
+    go get -v && \
+    go build -o /infping -v
 
 # final stage
 FROM ${ARCH}/alpine
