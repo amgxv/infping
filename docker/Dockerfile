@@ -1,21 +1,23 @@
-ARG ARCH=amd64
+# syntax=docker/dockerfile:1
 
-FROM golang:alpine AS build-env
-ARG ARCH
+FROM --platform=$BUILDPLATFORM golang:alpine AS build-env
+ARG TARGETOS TARGETARCH
 COPY . $GOPATH/src/github.com/majorcadevs/infping
 WORKDIR $GOPATH/src/github.com/majorcadevs/infping
 RUN apk add git --no-cache && \
-    case ${ARCH} in \
+    export GOOS=${TARGETOS} && \
+     case ${TARGETARCH} in \
         amd64) export GOARCH=amd64 ;; \
-        arm32v7) export GOARCH=arm; export GOARM=7 ;; \
-        arm64v8) export GOARCH=arm64 ;; \
-        *) echo Unsupported arch ${ARCH}; exit 1 ;; \
+        arm/v7) export GOARCH=arm; export GOARM=7 ;; \
+        arm/v6) export GOARCH=arm; export GOARM=6 ;; \
+        arm64) export GOARCH=arm64 ;; \
+        *) echo Maybe unsupported arch ${TARGETARCH}; export GOARCH=${TARGETARCH} ;; \
     esac && \
     go get -v && \
     go build -o /infping -v
 
 # final stage
-FROM ${ARCH}/alpine
+FROM alpine
 COPY --from=build-env /infping /
 RUN apk add --no-cache ca-certificates fping
 ENTRYPOINT ["/infping"]
