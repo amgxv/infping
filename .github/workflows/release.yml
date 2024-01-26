@@ -39,6 +39,6 @@ jobs:
         go build -o ${EXEC_NAME} -v
 
     - name: Upload to release
-      uses: svenstaro/upload-release-action@2
+      uses: svenstaro/upload-release-action@2.7.0
       with:
         file: '${EXEC_NAME}'
